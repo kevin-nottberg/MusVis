@@ -15,6 +15,14 @@ diffRed = 10
 diffBlue = 10
 diffGreen = 10
 
+getStatus():
+	
+    #if thread.isAlive() == TRUE:
+        #STATUS = "on"
+        #break
+    #elif thread.isAlive() == FALSE:
+        #STATUS = "off"
+        #break
 
 server_sock=BluetoothSocket( RFCOMM )
 server_sock.bind(("",PORT_ANY))
@@ -31,44 +39,33 @@ advertise_service( server_sock, "LightControlServer",
 #                   protocols = [ OBEX_UUID ] 
                  )
 
-class blueThread(Thread):
-    def __init__(self, val):
- 
-        Thread.__init__(self)
-        self.val = val
- 
- 
-    def run(self):
-        for i in range(1, self.val):
-        
-        while True:          
-	        print "Waiting for connection on RFCOMM channel %d" % port
-
-	        client_sock, client_info = server_sock.accept()
-	        print "Accepted connection from ", client_info
-
-	        try:
-	            data = client_sock.recv(1024)
-        	    if len(data) == 0: break
-	            print "received [%s]" % data
-    
-		        if data == 'temp':
-			        #Something
-		        elif data == 'lightOn':
-			        #Start the ledaudio light thread
-			        data = 'light on!'
-                    STATUS = "on"
-		        elif data == 'lightOff':
-			        #Stop the ledaudio light thread
-			        data = 'light off!'
-                    STATUS = "off"
-		        else:
-			        data = 'WTF!' 
-	            client_sock.send(data)
+while True:          
+	print "Waiting for connection on RFCOMM channel %d" % port
+        client_sock, client_info = server_sock.accept()
+	print "Accepted connection from ", client_info
+	
+	try:
+		data = client_sock.recv(1024)
+		if len(data) == 0: break
+		print "received [%s]" % data
+		
+		if data == 'temp':
+			#Something
+		elif data == 'lightOn':
+			data = 'light on!'
+                    	if STATUS = "on":
+				#break and do nothing
+		elif data == 'lightOff':
+			#Stop the ledaudio light thread
+		        data = 'light off!'
+                    	STATUS = "off"
+		else:
+			data = 'WTF!' 
+	            	client_sock.send(data)
 		        print "sending [%s]" % data
 
-	        except IOError:
-		        pass
+	except IOError:
+		pass
         
 	except KeyboardInterrupt:
 
@@ -80,12 +77,3 @@ class blueThread(Thread):
 
 		break
     
-
-getStatus():
-    if thread.isAlive() == TRUE:
-        STATUS = "on"
-        break
-    elif thread.isAlive() == FALSE:
-        STATUS = "off"
-        break
-        
